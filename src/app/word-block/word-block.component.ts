@@ -14,6 +14,8 @@ export class WordBlockComponent {
   words: { text: string; isHidden: boolean }[] = [];
   showForm = true
   snippetSize: number = 100;
+  inGradingMode: boolean = false;
+  lastGuessedWord = '';
 
   submitText(event: Event): void {
     event.preventDefault();
@@ -29,8 +31,11 @@ export class WordBlockComponent {
   }
 
   toggleWord(index: number): void {
+    if (this.inGradingMode) {return}
     if (this.words[index].isHidden) {
       this.words[index].isHidden = false;
+      this.inGradingMode = true;
+      this.lastGuessedWord = this.words[index].text
     }
   }
 
@@ -59,6 +64,18 @@ export class WordBlockComponent {
         ...word,
         isHidden: this.twentyPercentChance()
       }));
+  }
+
+  wordWasEasy(): void {
+    this.inGradingMode = false
+  }
+
+  wordWasHard(): void {
+    this.inGradingMode = false
+  }
+
+  wordWasMissed(): void {
+    this.inGradingMode = false
   }
 
   twentyPercentChance(): boolean {
