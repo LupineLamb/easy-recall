@@ -30,7 +30,7 @@ export class WordBlockComponent {
   submitText(event: Event): void {
     event.preventDefault();
     let nextAvailableId = 0
-    this.allWords = this.inputText.split(' ').map(word => ({
+    this.allWords = this.inputText.split(RegExp(/\s+/)).map(word => ({
       id: nextAvailableId++,
       text: word,
       isHidden: false,
