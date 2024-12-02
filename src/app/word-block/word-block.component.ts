@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -26,6 +26,35 @@ export class WordBlockComponent {
   snippetSize: number = 100;
   inGradingMode: boolean = false;
   lastGuessedWordId = 0;
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent) {
+    if (this.showForm) { return }
+    if (!this.inGradingMode) {
+      if (event.key == ' ') {
+        event.preventDefault();
+        this.showRandomSnippet()
+      }
+      return
+    }
+    //In grading mode:
+    event.preventDefault();
+    switch (event.key) {
+      case '1':
+        this.wordWasEasy();
+        break;
+      case '2':
+        this.wordWasHard();
+        break;
+      case '3':
+        this.wordWasMissed();
+        break;
+      case '4':
+        this.skipGrading();
+        break;
+    }
+
+  }
 
   submitText(event: Event): void {
     event.preventDefault();
@@ -55,6 +84,10 @@ export class WordBlockComponent {
     }
   }
 
+  skipGrading(): void {
+    this.inGradingMode = false;
+  }
+
   showRandomSnippet(): void {
     if (this.allWords.length <= this.snippetSize) {
       this.words = this.allWords.slice();
@@ -70,7 +103,7 @@ export class WordBlockComponent {
   hideRandomWords(): void {
       this.words = this.words.map(word => ({
         ...word,
-        isHidden: this.twentyPercentChance()
+        isHidden: this.thirtyPercentChance()
       }));
   }
 
@@ -126,7 +159,7 @@ export class WordBlockComponent {
     return color
   }
 
-  twentyPercentChance(): boolean {
+  thirtyPercentChance(): boolean {
     const rand = Math.floor(Math.random() * 10)
     if (rand < 3) { //0, 1, 2 so 30% chance
       return true
