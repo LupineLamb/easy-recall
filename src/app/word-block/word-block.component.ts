@@ -13,6 +13,7 @@ export class WordBlockComponent {
   inputText = ''; 
   words: { text: string; isHidden: boolean }[] = [];
   showForm = true
+  snippetSize: number = 100;
 
   submitText(event: Event): void {
     event.preventDefault();
@@ -30,6 +31,26 @@ export class WordBlockComponent {
   toggleWord(index: number): void {
     if (this.words[index].isHidden) {
       this.words[index].isHidden = false;
+    }
+  }
+
+  showRandomSnippet(): void {
+    let allWords: string[] = this.inputText.split(' ');
+    if (allWords.length <= this.snippetSize) {
+      this.words = allWords.map(word => ({
+        text: word,
+        isHidden: this.twentyPercentChance()
+      }));
+      return
+    }
+    const maxStartingChar = allWords.length - this.snippetSize
+    const startingChar = Math.floor(Math.random() * (maxStartingChar))
+    this.words = [];
+    for (let index = startingChar; index < (startingChar+this.snippetSize); index++) {
+      this.words.push({
+        text: allWords[index], 
+        isHidden: this.twentyPercentChance()
+      });
     }
   }
 
