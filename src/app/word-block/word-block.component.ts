@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 export class WordBlockComponent {
   inputText = ''; 
   words: { text: string; isHidden: boolean }[] = [];
+  showForm = true
 
   submitText(event: Event): void {
     event.preventDefault();
@@ -19,6 +20,11 @@ export class WordBlockComponent {
       text: word,
       isHidden: false
     }));
+    this.showForm = false;
+  }
+
+  revealForm(): void {
+    this.showForm = true
   }
 
   toggleWord(index: number): void {

@@ -1,7 +1,5 @@
-
-
 <div class="word-block-container">
-    <form class="text-form" (ngSubmit)="submitText($event)">
+    <form class="text-form" *ngIf="showForm" (ngSubmit)="submitText($event)">
         <textarea 
           [(ngModel)]="inputText"
           name="textInput" 
@@ -23,5 +21,6 @@
         </span>
       </p>
         <button class="hide-all-btn" (click)="hideRandomWords()">Hide Random Words</button>
+        <button class="hide-all-btn" (click)="revealForm()">Submit New Text</button>
     </div>
   </div>
