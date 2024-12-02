@@ -16,16 +16,25 @@
             *ngFor="let word of words; let i = index" 
             class="word" 
             [class.hidden]="word.isHidden"
+            [style.background-color]="getTextColor(i)"
             (click)="toggleWord(i)">
             {{word.text}}
         </span>
       </p>
-      <button class="hide-all-btn" (click)="hideRandomWords()">Hide Random Words</button>
-      <button class="hide-all-btn" (click)="revealForm()">Submit New Text</button>
-      <div>
-        <button class="hide-all-btn" (click)="showRandomSnippet()">Show random snippet</button>
-        <label for="snippetSizeInput">Enter size of snippet to generate:</label>
-        <input id="snippetSizeInput" type="number" [(ngModel)]="snippetSize">
+      <div *ngIf="!inGradingMode">
+        <button class="hide-all-btn" (click)="hideRandomWords()">Hide Random Words</button>
+        <button class="hide-all-btn" (click)="revealForm()">Submit New Text</button>
+        <div>
+          <button class="hide-all-btn" (click)="showRandomSnippet()">Show random snippet</button>
+          <label for="snippetSizeInput">Enter size of snippet to generate:</label>
+          <input id="snippetSizeInput" type="number" [(ngModel)]="snippetSize">
+        </div>
+      </div>
+      <div *ngIf="inGradingMode">
+        <p>Correct Answer: {{ allWords[lastGuessedWordId].text }}</p>
+        <button class="hide-all-btn" (click)="wordWasEasy()">Easy</button>
+        <button class="hide-all-btn" (click)="wordWasHard()">Hard</button>
+        <button class="hide-all-btn" (click)="wordWasMissed()">Missed</button>
       </div>
     </div>
   </div>
