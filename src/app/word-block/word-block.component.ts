@@ -19,5 +19,20 @@ export class WordBlockComponent {
       this.words[index].isHidden = false;
     }
   }
-}
 
+  hideRandomWords(): void {
+      this.words = this.words.map(word => ({
+        ...word,
+        isHidden: this.twentyPercentChance()
+      }));
+  }
+
+  twentyPercentChance(): boolean {
+    const rand = Math.floor(Math.random() * 10)
+    if (rand < 3) { //0, 1, 2 so 30% chance
+      return true
+    } 
+    return false
+  }
+
+}
