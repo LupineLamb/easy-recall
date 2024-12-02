@@ -37,6 +37,10 @@
     background-color: #218838;
   }
 
+.form-hidden {
+  visibility: collapse
+}
+
 .word {
   margin: 0 0px;
   padding: 0px 0px;
