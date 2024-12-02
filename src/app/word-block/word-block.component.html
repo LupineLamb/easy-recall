@@ -1,12 +1,27 @@
+
+
 <div class="word-block-container">
-    <p>
-      <span 
-        *ngFor="let word of words; let i = index" 
-        class="word" 
-        [class.hidden]="word.isHidden"
-        (click)="toggleWord(i)">
-        {{word.text}}
-      </span>
-    </p>
-    <button class="hide-all-btn" (click)="hideRandomWords()">Hide Random Words</button>
+    <form class="text-form" (ngSubmit)="submitText($event)">
+        <textarea 
+          [(ngModel)]="inputText"
+          name="textInput" 
+          class="text-input"
+          placeholder="Enter text to memorize..."
+          rows="3"
+        ></textarea>
+        <button type="submit" class="submit-btn">Set Text</button>
+      </form>
+    
+    <div class="word-block" *ngIf="words.length > 0">
+      <p>
+        <span 
+            *ngFor="let word of words; let i = index" 
+            class="word" 
+            [class.hidden]="word.isHidden"
+            (click)="toggleWord(i)">
+            {{word.text}}
+        </span>
+      </p>
+        <button class="hide-all-btn" (click)="hideRandomWords()">Hide Random Words</button>
+    </div>
   </div>
