@@ -2,6 +2,14 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+interface WordState {
+  text: string,
+  isHidden: boolean,
+  numEasy: number,
+  numHard: number,
+  numMissed: number,
+}
+
 @Component({
   selector: 'app-word-block',
   templateUrl: './word-block.component.html',
@@ -11,7 +19,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class WordBlockComponent {
   inputText = ''; 
-  words: { text: string; isHidden: boolean }[] = [];
+  words: WordState[] = [];
+  allWords: WordState[] = [];
   showForm = true
   snippetSize: number = 100;
   inGradingMode: boolean = false;
@@ -19,10 +28,14 @@ export class WordBlockComponent {
 
   submitText(event: Event): void {
     event.preventDefault();
-    this.words = this.inputText.split(' ').map(word => ({
+    this.allWords = this.inputText.split(' ').map(word => ({
       text: word,
-      isHidden: false
+      isHidden: false,
+      numEasy: 0,
+      numHard: 0,
+      numMissed: 0,
     }));
+    this.words = this.allWords.slice()
     this.showForm = false;
   }
 
@@ -40,23 +53,15 @@ export class WordBlockComponent {
   }
 
   showRandomSnippet(): void {
-    let allWords: string[] = this.inputText.split(' ');
-    if (allWords.length <= this.snippetSize) {
-      this.words = allWords.map(word => ({
-        text: word,
-        isHidden: this.twentyPercentChance()
-      }));
-      return
+    if (this.allWords.length <= this.snippetSize) {
+      this.words = this.allWords.slice();
+      this.hideRandomWords();
+      return;
     }
-    const maxStartingChar = allWords.length - this.snippetSize
-    const startingChar = Math.floor(Math.random() * (maxStartingChar))
-    this.words = [];
-    for (let index = startingChar; index < (startingChar+this.snippetSize); index++) {
-      this.words.push({
-        text: allWords[index], 
-        isHidden: this.twentyPercentChance()
-      });
-    }
+    const maxStartingWord = this.allWords.length - this.snippetSize + 1; //+1 so it includes itself
+    const startingWord = Math.floor(Math.random() * (maxStartingWord));
+    this.words = this.allWords.slice(startingWord, (startingWord+this.snippetSize));
+    this.hideRandomWords();
   }
 
   hideRandomWords(): void {
