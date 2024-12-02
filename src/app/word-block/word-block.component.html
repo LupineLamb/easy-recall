@@ -16,6 +16,7 @@
             *ngFor="let word of words; let i = index" 
             class="word" 
             [class.hidden]="word.isHidden"
+            [style.background-color]="getTextColor(i)"
             (click)="toggleWord(i)">
             {{word.text}}
         </span>
@@ -30,7 +31,7 @@
         </div>
       </div>
       <div *ngIf="inGradingMode">
-        <p>Correct Answer: {{ lastGuessedWord }}</p>
+        <p>Correct Answer: {{ allWords[lastGuessedWordId].text }}</p>
         <button class="hide-all-btn" (click)="wordWasEasy()">Easy</button>
         <button class="hide-all-btn" (click)="wordWasHard()">Hard</button>
         <button class="hide-all-btn" (click)="wordWasMissed()">Missed</button>

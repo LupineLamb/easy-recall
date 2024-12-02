@@ -49,17 +49,8 @@
   transition: background-color 0.3s ease;
 }
 
-.word:hover {
-  background-color: #f0f0f0;
-}
-
 .hidden {
-  background-color: #333;
   color: transparent;
-}
-
-.hidden:hover {
-  background-color: #444;
 }
 
 .hide-all-btn {

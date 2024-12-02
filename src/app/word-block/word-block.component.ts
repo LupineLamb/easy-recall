@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 interface WordState {
+  id: number,
   text: string,
   isHidden: boolean,
   numEasy: number,
@@ -24,11 +25,13 @@ export class WordBlockComponent {
   showForm = true
   snippetSize: number = 100;
   inGradingMode: boolean = false;
-  lastGuessedWord = '';
+  lastGuessedWordId = 0;
 
   submitText(event: Event): void {
     event.preventDefault();
+    let nextAvailableId = 0
     this.allWords = this.inputText.split(' ').map(word => ({
+      id: nextAvailableId++,
       text: word,
       isHidden: false,
       numEasy: 0,
@@ -48,7 +51,7 @@ export class WordBlockComponent {
     if (this.words[index].isHidden) {
       this.words[index].isHidden = false;
       this.inGradingMode = true;
-      this.lastGuessedWord = this.words[index].text
+      this.lastGuessedWordId = this.words[index].id;
     }
   }
 
@@ -73,14 +76,54 @@ export class WordBlockComponent {
 
   wordWasEasy(): void {
     this.inGradingMode = false
+    this.allWords[this.lastGuessedWordId].numEasy += 1
   }
 
   wordWasHard(): void {
     this.inGradingMode = false
+    this.allWords[this.lastGuessedWordId].numHard += 1
   }
 
   wordWasMissed(): void {
     this.inGradingMode = false
+    this.allWords[this.lastGuessedWordId].numMissed += 1
+  }
+
+  getTextColor(index: number): string {
+    let word: WordState = this.words[index]
+    if (word.isHidden) {return '#333'}
+
+    let red = 255
+    let blue = 255
+    let green = 255
+
+    red += word.numMissed * 40
+    blue -= word.numMissed * 20
+    green -= word.numMissed * 20
+
+    red += word.numHard * 20
+    blue -= word.numHard * 40
+    green += word.numHard * 20
+
+    red -= word.numEasy * 20
+    blue -= word.numEasy * 20
+    green += word.numEasy * 40
+
+    red = this.normalizeColor(red)
+    blue = this.normalizeColor(blue)
+    green = this.normalizeColor(green)
+
+    let hex = '#' + [red, green, blue].map(x => {
+        const hex = x.toString(16);
+        return hex.length === 1 ? '0' + hex : hex;
+    }).join('');
+    return hex
+  }
+
+  normalizeColor(color: number): number {
+    if (color < 0) {return 0}
+    if (color > 255) {return 255}
+    return color
   }
 
   twentyPercentChance(): boolean {
