@@ -1,0 +1,26 @@
+.word-block-container {
+  padding: 20px;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.word {
+  margin: 0 0px;
+  padding: 0px 0px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+.word:hover {
+  background-color: #f0f0f0;
+}
+
+.hidden {
+  background-color: #333;
+  color: transparent;
+}
+
+.hidden:hover {
+  background-color: #444;
+}

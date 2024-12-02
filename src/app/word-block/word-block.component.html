@@ -1,0 +1,11 @@
+<div class="word-block-container">
+    <p>
+      <span 
+        *ngFor="let word of words; let i = index" 
+        class="word" 
+        [class.hidden]="word.isHidden"
+        (click)="toggleWord(i)">
+        {{word.text}}
+      </span>
+    </p>
+  </div>
