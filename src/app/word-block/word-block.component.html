@@ -12,11 +12,12 @@
     
     <div class="word-block" *ngIf="words.length > 0">
       <p>
-        <span 
+        <span
             *ngFor="let word of words; let i = index" 
             class="word" 
             [class.hidden]="word.isHidden"
-            [style.background-color]="getTextColor(i)"
+            [style.color]="getTextColor(i)"
+            [style.background-color]="getTextBackground(i)"
             (click)="toggleWord(i)">
             {{word.text}}
         </span>
@@ -26,10 +27,10 @@
         <button class="hide-all-btn" (click)="revealForm()">Submit New Text</button>
         <div>
           <div>
-            <label for="snippetSizeInput">Enter size of snippet to generate:</label>
+            <label for="snippetSizeInput">Words per Passage:</label>
             <input id="snippetSizeInput" type="number" [(ngModel)]="snippetSize">
           </div>
-          <button class="hide-all-btn" (click)="showRandomSnippet()">Show Random Snippet (Spacebar)</button>
+          <button class="hide-all-btn" (click)="showRandomSnippet()">Random Passage (Spacebar)</button>
           
         </div>
       </div>
