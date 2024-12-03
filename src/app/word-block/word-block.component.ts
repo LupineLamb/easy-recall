@@ -30,6 +30,7 @@ export class WordBlockComponent {
   lastGuessedWordId = 0;
 
   hidLastWord = false;
+  commonWords: string[] = ['a', 'an', 'the', 'of', 'for', 'to', 'on', 'by', 'as', 'so', 'if', 'then', 'but', 'and', 'with'];
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
@@ -128,44 +129,31 @@ export class WordBlockComponent {
 
   getTextColor(index: number): string {
     let word: WordState = this.words[index]
-    if (word.isHidden) {return '#333'}
+    if (word.isHidden) {return `rgba(255, 255, 255, 0)`}
+    if (this.commonWords.includes(word.text.toLocaleLowerCase())) {
+      return `rgba(255, 255, 255, 0.2)`
+    }
 
-    let red = 255
-    let blue = 255
-    let green = 255
+    let opacity = 0.7;
 
-    red += word.numMissed * 40
-    blue -= word.numMissed * 20
-    green -= word.numMissed * 20
+    opacity += word.numMissed * 0.15
+    opacity -= word.numHard * 0.05
+    opacity -= word.numEasy * 0.1
 
-    red += word.numHard * 20
-    blue -= word.numHard * 40
-    green += word.numHard * 20
+    if (opacity < 0.2) { opacity = 0.2}
+    if (opacity > 1) { opacity = 1}
 
-    red -= word.numEasy * 20
-    blue -= word.numEasy * 20
-    green += word.numEasy * 40
-
-    red = this.normalizeColor(red)
-    blue = this.normalizeColor(blue)
-    green = this.normalizeColor(green)
-
-    let hex = '#' + [red, green, blue].map(x => {
-        const hex = x.toString(16);
-        return hex.length === 1 ? '0' + hex : hex;
-    }).join('');
-    return hex
+    return `rgba(255, 255, 255, ${opacity})`
   }
 
-  normalizeColor(color: number): number {
-    if (color < 0) {return 0}
-    if (color > 255) {return 255}
-    return color
+  getTextBackground(index: number): string {
+    let word: WordState = this.words[index]
+    if (word.isHidden) {return `rgba(255, 255, 255, 0.1)`}
+    return `rgba(255, 255, 255, 0)`
   }
 
   randomlyHideWord(word: WordState): boolean {
-    const articles: string[] = ['a', 'an', 'the'];
-    if (articles.includes(word.text.toLowerCase())) {
+    if (this.commonWords.includes(word.text.toLowerCase())) {
       this.hidLastWord = false;
       return false
     }
