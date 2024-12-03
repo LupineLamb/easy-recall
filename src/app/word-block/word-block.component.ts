@@ -22,10 +22,14 @@ export class WordBlockComponent {
   inputText = ''; 
   words: WordState[] = [];
   allWords: WordState[] = [];
-  showForm = true
   snippetSize: number = 100;
+
+  showForm = true
+
   inGradingMode: boolean = false;
   lastGuessedWordId = 0;
+
+  hidLastWord = false;
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
@@ -103,7 +107,7 @@ export class WordBlockComponent {
   hideRandomWords(): void {
       this.words = this.words.map(word => ({
         ...word,
-        isHidden: this.thirtyPercentChance()
+        isHidden: this.randomlyHideWord(word)
       }));
   }
 
@@ -159,9 +163,24 @@ export class WordBlockComponent {
     return color
   }
 
-  thirtyPercentChance(): boolean {
-    const rand = Math.floor(Math.random() * 10)
-    if (rand < 3) { //0, 1, 2 so 30% chance
+  randomlyHideWord(word: WordState): boolean {
+    const articles: string[] = ['a', 'an', 'the'];
+    if (articles.includes(word.text.toLowerCase())) {
+      this.hidLastWord = false;
+      return false
+    }
+
+    let percentChance = 15;
+    if (this.hidLastWord) { percentChance = 5}
+    const willHide = this.xPercentChance(percentChance);
+
+    this.hidLastWord = willHide;
+    return willHide
+  }
+
+  xPercentChance(x: number): boolean {
+    const rand = Math.floor(Math.random() * 100)
+    if (rand < x) { //0 inclusive means x exclusive
       return true
     } 
     return false
