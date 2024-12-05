@@ -67,6 +67,7 @@ export class WordBlockComponent {
     event.preventDefault();
 
     let wordsByLine: string[] = this.inputText.split('\n')
+    this.allWords = [];
     let nextAvailableId = 0
     wordsByLine.forEach(lineString => {
       let lineArray: string[] = lineString.split(' ');
