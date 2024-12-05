@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 interface WordState {
   id: number,
   text: string,
+  beginsLine: boolean,
   isHidden: boolean,
   numEasy: number,
   numHard: number,
@@ -20,7 +21,7 @@ interface WordState {
 })
 export class WordBlockComponent {
   inputText = ''; 
-  words: WordState[] = [];
+  wordsToDisplay: WordState[] = [];
   allWords: WordState[] = [];
   snippetSize: number = 100;
 
@@ -63,16 +64,28 @@ export class WordBlockComponent {
 
   submitText(event: Event): void {
     event.preventDefault();
+
+    let wordsByLine: string[] = this.inputText.split('\n')
     let nextAvailableId = 0
-    this.allWords = this.inputText.split(RegExp(/\s+/)).map(word => ({
-      id: nextAvailableId++,
-      text: word,
-      isHidden: false,
-      numEasy: 0,
-      numHard: 0,
-      numMissed: 0,
-    }));
-    this.words = this.allWords.slice()
+    wordsByLine.forEach(lineString => {
+      let lineArray: string[] = lineString.split(' ');
+      let beginsLine = true;
+
+      lineArray.forEach(word => {
+        this.allWords.push({
+          id: nextAvailableId++,
+          text: word,
+          beginsLine,
+          isHidden: false,
+          numEasy: 0,
+          numHard: 0,
+          numMissed: 0,
+        });
+        beginsLine=false
+      });
+    });
+
+    this.wordsToDisplay = this.allWords.slice()
     this.showForm = false;
   }
 
@@ -82,10 +95,10 @@ export class WordBlockComponent {
 
   toggleWord(index: number): void {
     if (this.inGradingMode) {return}
-    if (this.words[index].isHidden) {
-      this.words[index].isHidden = false;
+    if (this.wordsToDisplay[index].isHidden) {
+      this.wordsToDisplay[index].isHidden = false;
       this.inGradingMode = true;
-      this.lastGuessedWordId = this.words[index].id;
+      this.lastGuessedWordId = this.wordsToDisplay[index].id;
     }
   }
 
@@ -95,18 +108,18 @@ export class WordBlockComponent {
 
   showRandomSnippet(): void {
     if (this.allWords.length <= this.snippetSize) {
-      this.words = this.allWords.slice();
+      this.wordsToDisplay = this.allWords.slice();
       this.hideRandomWords();
       return;
     }
     const maxStartingWord = this.allWords.length - this.snippetSize + 1; //+1 so it includes itself
     const startingWord = Math.floor(Math.random() * (maxStartingWord));
-    this.words = this.allWords.slice(startingWord, (startingWord+this.snippetSize));
+    this.wordsToDisplay = this.allWords.slice(startingWord, (startingWord+this.snippetSize));
     this.hideRandomWords();
   }
 
   hideRandomWords(): void {
-      this.words = this.words.map(word => ({
+      this.wordsToDisplay = this.wordsToDisplay.map(word => ({
         ...word,
         isHidden: this.randomlyHideWord(word)
       }));
@@ -128,7 +141,7 @@ export class WordBlockComponent {
   }
 
   getTextColor(index: number): string {
-    let word: WordState = this.words[index]
+    let word: WordState = this.wordsToDisplay[index]
     if (word.isHidden) {return `rgba(255, 255, 255, 0)`}
     if (this.commonWords.includes(word.text.toLocaleLowerCase())) {
       return `rgba(255, 255, 255, 0.2)`
@@ -147,7 +160,7 @@ export class WordBlockComponent {
   }
 
   getTextBackground(index: number): string {
-    let word: WordState = this.words[index]
+    let word: WordState = this.wordsToDisplay[index]
     if (word.isHidden) {return `rgba(255, 255, 255, 0.1)`}
     return `rgba(255, 255, 255, 0)`
   }

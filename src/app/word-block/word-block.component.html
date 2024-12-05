@@ -10,15 +10,16 @@
         <button type="submit" class="submit-btn">Set Text</button>
       </form>
     
-    <div class="word-block" *ngIf="words.length > 0">
+    <div class="word-block" *ngIf="wordsToDisplay.length > 0">
       <p>
         <span
-            *ngFor="let word of words; let i = index" 
+            *ngFor="let word of wordsToDisplay; let i = index" 
             class="word" 
             [class.hidden]="word.isHidden"
             [style.color]="getTextColor(i)"
             [style.background-color]="getTextBackground(i)"
             (click)="toggleWord(i)">
+            <p *ngIf="word.beginsLine"></p>
             {{word.text}}
         </span>
       </p>
