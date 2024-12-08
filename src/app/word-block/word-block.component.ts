@@ -32,7 +32,10 @@ export class WordBlockComponent {
   lastGuessedWordId = 0;
 
   hidLastWord = false;
-  commonWords: string[] = ['a', 'an', 'the', 'of', 'for', 'to', 'on', 'by', 'as', 'so', 'if', 'then', 'but', 'and', 'with'];
+  commonWords: string[] = ['a', 'an', 'the', 'of', 'for', 
+                           'to', 'on', 'by', 'as', 'so', 
+                           'if', 'then', 'but', 'and', 'with',
+                          'this', 'that', 'in'];
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
@@ -137,7 +140,6 @@ export class WordBlockComponent {
   wordWasHard(): void {
     this.inGradingMode = false
     this.allWords[this.lastGuessedWordId].numHard += 1
-    this.allWords[this.lastGuessedWordId].masteryPoints = 0
   }
 
   wordWasMissed(): void {
