@@ -10,6 +10,7 @@ interface WordState {
   numEasy: number,
   numHard: number,
   numMissed: number,
+  masteryPoints: number,
 }
 
 @Component({
@@ -31,7 +32,10 @@ export class WordBlockComponent {
   lastGuessedWordId = 0;
 
   hidLastWord = false;
-  commonWords: string[] = ['a', 'an', 'the', 'of', 'for', 'to', 'on', 'by', 'as', 'so', 'if', 'then', 'but', 'and', 'with'];
+  commonWords: string[] = ['a', 'an', 'the', 'of', 'for', 
+                           'to', 'on', 'by', 'as', 'so', 
+                           'if', 'then', 'but', 'and', 'with',
+                          'this', 'that', 'in'];
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
@@ -66,6 +70,7 @@ export class WordBlockComponent {
     event.preventDefault();
 
     let wordsByLine: string[] = this.inputText.split('\n')
+    this.allWords = [];
     let nextAvailableId = 0
     wordsByLine.forEach(lineString => {
       let lineArray: string[] = lineString.split(' ');
@@ -80,6 +85,7 @@ export class WordBlockComponent {
           numEasy: 0,
           numHard: 0,
           numMissed: 0,
+          masteryPoints: 0,
         });
         beginsLine=false
       });
@@ -128,6 +134,7 @@ export class WordBlockComponent {
   wordWasEasy(): void {
     this.inGradingMode = false
     this.allWords[this.lastGuessedWordId].numEasy += 1
+    this.allWords[this.lastGuessedWordId].masteryPoints += 1
   }
 
   wordWasHard(): void {
@@ -138,14 +145,20 @@ export class WordBlockComponent {
   wordWasMissed(): void {
     this.inGradingMode = false
     this.allWords[this.lastGuessedWordId].numMissed += 1
+    this.allWords[this.lastGuessedWordId].masteryPoints = 0
+  }
+
+  wordIsMastered(word: WordState): boolean {
+    return (word.masteryPoints >= 3)
   }
 
   getTextColor(index: number): string {
     let word: WordState = this.wordsToDisplay[index]
     if (word.isHidden) {return `rgba(255, 255, 255, 0)`}
     if (this.commonWords.includes(word.text.toLocaleLowerCase())) {
-      return `rgba(255, 255, 255, 0.2)`
+      return `rgba(200, 200, 255, 0.3)`
     }
+    if (this.wordIsMastered(word)) {return `rgba(255, 255, 100, 0.3)`}
 
     let opacity = 0.7;
 
@@ -167,6 +180,11 @@ export class WordBlockComponent {
 
   randomlyHideWord(word: WordState): boolean {
     if (this.commonWords.includes(word.text.toLowerCase())) {
+      this.hidLastWord = false;
+      return false
+    }
+
+    if (this.wordIsMastered(word)) {
       this.hidLastWord = false;
       return false
     }
