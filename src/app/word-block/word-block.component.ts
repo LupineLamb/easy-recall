@@ -1,17 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface WordState {
-  id: number,
-  text: string,
-  beginsLine: boolean,
-  isHidden: boolean,
-  numEasy: number,
-  numHard: number,
-  numMissed: number,
-  masteryPoints: number,
-}
+import { WordState } from '../word-state';
 
 @Component({
   selector: 'app-word-block',
