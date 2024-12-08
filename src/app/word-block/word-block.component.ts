@@ -1,7 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { WordState } from '../word-state';
+import { WordState } from '../interfaces/word-state';
+import { LocalDataService } from '../services/local-data.service';
 
 @Component({
   selector: 'app-word-block',
@@ -11,6 +12,7 @@ import { WordState } from '../word-state';
   imports: [CommonModule, FormsModule]
 })
 export class WordBlockComponent {
+  constructor (private localDataService: LocalDataService) {}
   inputText = ''; 
   wordsToDisplay: WordState[] = [];
   allWords: WordState[] = [];
@@ -119,6 +121,14 @@ export class WordBlockComponent {
         ...word,
         isHidden: this.randomlyHideWord(word)
       }));
+  }
+
+  saveData(): void {
+    this.localDataService.setItem("", "")
+  }
+
+  loadData(): void {
+    this.localDataService.getItem("")
   }
 
   wordWasEasy(): void {

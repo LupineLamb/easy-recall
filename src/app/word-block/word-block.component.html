@@ -24,8 +24,8 @@
         </span>
       </p>
       <div *ngIf="!inGradingMode">
-        <button class="hide-all-btn">Save</button>
-        <button class="hide-all-btn">Load</button>
+        <button class="hide-all-btn" (click)="saveData()">Save</button>
+        <button class="hide-all-btn" (click)="loadData()">Load</button>
         <button class="hide-all-btn" (click)="revealForm()">Submit New Text</button>
         <div>
           <div>
