@@ -2,6 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WordState } from '../interfaces/word-state';
+import { LocalData } from '../interfaces/local-data';
 import { LocalDataService } from '../services/local-data.service';
 
 @Component({
@@ -124,11 +125,25 @@ export class WordBlockComponent {
   }
 
   saveData(): void {
-    this.localDataService.setItem("", "")
+    const dataToSave: LocalData = {
+        id: "test data",
+        words: this.allWords
+    }
+    this.localDataService.setItem("localData", dataToSave)
   }
 
   loadData(): void {
-    this.localDataService.getItem("")
+    const loadedData = this.localDataService.getItem("localData")
+    if ("words" in loadedData) {
+      this.allWords = loadedData.words
+      this.wordsToDisplay = this.allWords.slice()
+    }
+    else { alert("Data is corrupted and cannot be loaded. Save over it with new text.")}
+  }
+
+  startFromLoadedData(): void {
+    this.loadData()
+    this.showForm = false
   }
 
   wordWasEasy(): void {

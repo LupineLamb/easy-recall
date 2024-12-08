@@ -6,13 +6,11 @@ import { Injectable } from '@angular/core';
 export class LocalDataService {
   constructor() { }
 
-  setItem(_key: string, _value: any): void {
-    alert("Save button clicked!")
-    //localStorage.setItem(key, JSON.stringify (value))
+  setItem(key: string, value: any): void {
+    localStorage.setItem(key, JSON.stringify (value))
   }
-  getItem(_key: string): any {
-    alert("Load button clicked!")
-    //const data = localStorage.getItem(key)
-    //return data ? JSON.parse(data) : null
+  getItem(key: string): any {
+    const data = localStorage.getItem(key)
+    return data ? JSON.parse(data) : null
   }
 }
