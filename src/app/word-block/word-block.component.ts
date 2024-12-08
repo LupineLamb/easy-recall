@@ -1,17 +1,9 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface WordState {
-  id: number,
-  text: string,
-  beginsLine: boolean,
-  isHidden: boolean,
-  numEasy: number,
-  numHard: number,
-  numMissed: number,
-  masteryPoints: number,
-}
+import { WordState } from '../interfaces/word-state';
+import { LocalData } from '../interfaces/local-data';
+import { LocalDataService } from '../services/local-data.service';
 
 @Component({
   selector: 'app-word-block',
@@ -21,6 +13,7 @@ interface WordState {
   imports: [CommonModule, FormsModule]
 })
 export class WordBlockComponent {
+  constructor (private localDataService: LocalDataService) {}
   inputText = ''; 
   wordsToDisplay: WordState[] = [];
   allWords: WordState[] = [];
@@ -129,6 +122,28 @@ export class WordBlockComponent {
         ...word,
         isHidden: this.randomlyHideWord(word)
       }));
+  }
+
+  saveData(): void {
+    const dataToSave: LocalData = {
+        id: "test data",
+        words: this.allWords
+    }
+    this.localDataService.setItem("localData", dataToSave)
+  }
+
+  loadData(): void {
+    const loadedData = this.localDataService.getItem("localData")
+    if ("words" in loadedData) {
+      this.allWords = loadedData.words
+      this.wordsToDisplay = this.allWords.slice()
+    }
+    else { alert("Data is corrupted and cannot be loaded. Save over it with new text.")}
+  }
+
+  startFromLoadedData(): void {
+    this.loadData()
+    this.showForm = false
   }
 
   wordWasEasy(): void {
