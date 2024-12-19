@@ -28,7 +28,7 @@ export class WordBlockComponent {
   commonWords: string[] = ['a', 'an', 'the', 'of', 'for', 
                            'to', 'on', 'by', 'as', 'so', 
                            'if', 'then', 'but', 'and', 'with',
-                          'this', 'that', 'in'];
+                          'this', 'that', 'in', 'you', 'your'];
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
@@ -78,7 +78,7 @@ export class WordBlockComponent {
           numEasy: 0,
           numHard: 0,
           numMissed: 0,
-          masteryPoints: 0,
+          masteryPoints: 1,
         });
         beginsLine=false
       });
@@ -111,9 +111,15 @@ export class WordBlockComponent {
       this.hideRandomWords();
       return;
     }
-    const maxStartingWord = this.allWords.length - this.snippetSize + 1; //+1 so it includes itself
-    const startingWord = Math.floor(Math.random() * (maxStartingWord));
-    this.wordsToDisplay = this.allWords.slice(startingWord, (startingWord+this.snippetSize));
+    const startingWord = Math.floor(Math.random() * (this.allWords.length));
+    if (startingWord + this.snippetSize > this.allWords.length) {
+      this.wordsToDisplay = this.allWords.slice(startingWord)
+      const remainingWordCount = this.snippetSize - (this.allWords.length - startingWord)
+      this.wordsToDisplay = this.wordsToDisplay.concat(this.allWords.slice(0, remainingWordCount))
+    }
+    else {
+      this.wordsToDisplay = this.allWords.slice(startingWord, (startingWord+this.snippetSize));
+    }
     this.hideRandomWords();
   }
 
@@ -178,7 +184,7 @@ export class WordBlockComponent {
     let opacity = 0.7;
 
     opacity += word.numMissed * 0.15
-    opacity -= word.numHard * 0.05
+    opacity += word.numHard * 0.05
     opacity -= word.numEasy * 0.1
 
     if (opacity < 0.2) { opacity = 0.2}
