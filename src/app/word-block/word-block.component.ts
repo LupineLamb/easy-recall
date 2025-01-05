@@ -22,7 +22,7 @@ export class WordBlockComponent {
   showForm = true
 
   inGradingMode: boolean = false;
-  lastGuessedWordId = 0;
+  lastGuessedWordId: number | null = null;
 
   hidLastWord = false;
   commonWords: string[] = ['a', 'an', 'the', 'of', 'for', 
@@ -111,7 +111,7 @@ export class WordBlockComponent {
       this.hideRandomWords();
       return;
     }
-    const startingWord = Math.floor(Math.random() * (this.allWords.length));
+    const startingWord = this.getStartingWord();
     if (startingWord + this.snippetSize > this.allWords.length) {
       this.wordsToDisplay = this.allWords.slice(startingWord)
       const remainingWordCount = this.snippetSize - (this.allWords.length - startingWord)
@@ -121,6 +121,10 @@ export class WordBlockComponent {
       this.wordsToDisplay = this.allWords.slice(startingWord, (startingWord+this.snippetSize));
     }
     this.hideRandomWords();
+  }
+
+  getStartingWord(): number {
+    return Math.floor(Math.random() * (this.allWords.length));
   }
 
   hideRandomWords(): void {
@@ -154,19 +158,25 @@ export class WordBlockComponent {
 
   wordWasEasy(): void {
     this.inGradingMode = false
-    this.allWords[this.lastGuessedWordId].numEasy += 1
-    this.allWords[this.lastGuessedWordId].masteryPoints += 1
+    if (this.lastGuessedWordId != null) {
+      this.allWords[this.lastGuessedWordId].numEasy += 1
+      this.allWords[this.lastGuessedWordId].masteryPoints += 1
+    }
   }
 
   wordWasHard(): void {
     this.inGradingMode = false
-    this.allWords[this.lastGuessedWordId].numHard += 1
+    if (this.lastGuessedWordId != null) {
+      this.allWords[this.lastGuessedWordId].numHard += 1
+    }
   }
 
   wordWasMissed(): void {
     this.inGradingMode = false
-    this.allWords[this.lastGuessedWordId].numMissed += 1
-    this.allWords[this.lastGuessedWordId].masteryPoints = 0
+    if (this.lastGuessedWordId != null) {
+      this.allWords[this.lastGuessedWordId].numMissed += 1
+      this.allWords[this.lastGuessedWordId].masteryPoints = 0
+    }
   }
 
   wordIsMastered(word: WordState): boolean {
