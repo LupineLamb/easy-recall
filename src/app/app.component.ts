@@ -15,4 +15,7 @@ export class AppComponent {
   title = 'easy-recall';
   CurrentModeHTML = CurrentMode
   currentMode = CurrentMode.INPUT
+  handleModeSwitch(newMode: CurrentMode) {
+    this.currentMode = newMode
+    }
 }

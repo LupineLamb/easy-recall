@@ -1,4 +1,5 @@
 <div class="word-block-container">
+    <button (click)="switchToGradingMode()">Next Component</button>
     <form class="text-form" *ngIf="showForm" (ngSubmit)="submitText($event)">
         <textarea 
           [(ngModel)]="inputText"

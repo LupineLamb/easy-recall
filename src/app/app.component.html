@@ -1,6 +1,15 @@
 <div class="app-container">
   <h1>Fill in the Blanks: DX Edition</h1>
-  <app-input-form *ngIf="currentMode === CurrentModeHTML.INPUT"></app-input-form>
-  <app-word-block *ngIf="currentMode === CurrentModeHTML.PASSAGE"></app-word-block>
-  <app-grading-mode *ngIf="currentMode === CurrentModeHTML.GRADING"></app-grading-mode>
+  <app-input-form 
+    *ngIf="currentMode === CurrentModeHTML.INPUT"
+    (switchMode)="handleModeSwitch($event)">
+  </app-input-form>
+  <app-word-block 
+    *ngIf="currentMode === CurrentModeHTML.PASSAGE"
+    (switchMode)="handleModeSwitch($event)">
+  </app-word-block>
+  <app-grading-mode 
+    *ngIf="currentMode === CurrentModeHTML.GRADING"
+    (switchMode)="handleModeSwitch($event)">
+  </app-grading-mode>
 </div>

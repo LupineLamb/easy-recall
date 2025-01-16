@@ -1,9 +1,10 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LocalData } from '../../interfaces/local-data';
 import { LocalDataService } from '../../services/local-data.service';
 import { WordState } from '../../interfaces/word-state';
+import { CurrentMode } from '../../enums/current-mode';
 
 @Component({
   selector: 'app-word-block',
@@ -13,6 +14,11 @@ import { WordState } from '../../interfaces/word-state';
   imports: [CommonModule, FormsModule]
 })
 export class WordBlockComponent {
+  @Output() switchMode = new EventEmitter<CurrentMode>();
+
+  switchToGradingMode() {
+    this.switchMode.emit(CurrentMode.GRADING)
+  }
   constructor (private localDataService: LocalDataService) {}
   inputText = ''; 
   wordsToDisplay: WordState[] = [];
