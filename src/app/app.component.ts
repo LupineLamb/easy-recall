@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { WordBlockComponent } from './word-block/word-block.component';
+import { WordBlockComponent } from './components/word-block/word-block.component';
 
 @Component({
   selector: 'app-root',

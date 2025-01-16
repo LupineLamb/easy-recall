@@ -42,7 +42,7 @@
         </div>
       </div>
       <div *ngIf="inGradingMode">
-        <p>Correct Answer: {{ allWords[lastGuessedWordId].text }}</p>
+        <p *ngIf="lastGuessedWordId != null">Correct Answer: {{ allWords[lastGuessedWordId].text }}</p>
         <button class="hide-all-btn" (click)="wordWasEasy()">Easy (1)</button>
         <button class="hide-all-btn" (click)="wordWasHard()">Hard (2)</button>
         <button class="hide-all-btn" (click)="wordWasMissed()">Missed (3)</button>

@@ -1,9 +1,9 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { WordState } from '../interfaces/word-state';
-import { LocalData } from '../interfaces/local-data';
-import { LocalDataService } from '../services/local-data.service';
+import { LocalData } from '../../interfaces/local-data';
+import { LocalDataService } from '../../services/local-data.service';
+import { WordState } from '../../interfaces/word-state';
 
 @Component({
   selector: 'app-word-block',

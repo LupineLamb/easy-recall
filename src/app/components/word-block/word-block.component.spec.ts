@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { WordBlockComponent } from './word-block.component';
-import { WordState } from '../interfaces/word-state';
+import { WordState } from '../../interfaces/word-state';
 
 describe('WordBlockComponent', () => {
   let component: WordBlockComponent;
