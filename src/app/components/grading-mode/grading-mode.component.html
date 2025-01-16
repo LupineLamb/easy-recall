@@ -1,2 +1,21 @@
 <p>grading-mode works!</p>
 <button (click)="switchToInputMode()">Next Component</button>
+<div class="word-block" *ngIf="(wordsToDisplay.length > 0)">
+    <p>
+      <span
+          *ngFor="let word of wordsToDisplay; let i = index" 
+          class="word" 
+          [class.hidden]="word.isHidden"
+          [style.color]="getTextColor(i)"
+          [style.background-color]="getTextBackground(i)">
+          <p *ngIf="word.beginsLine"></p>
+          {{word.text}}
+      </span>
+    </p>
+    </div>
+    <div>
+      <p *ngIf="lastGuessedWordId != null">Correct Answer: {{ allWords[lastGuessedWordId].text }}</p>
+      <button class="hide-all-btn" (click)="wordWasCorrect()">Got it! (1)</button>
+      <button class="hide-all-btn" (click)="wordWasMissed()">Missed (2)</button>
+      <button class="hide-all-btn" (click)="skipGrading()">Skip (3)</button>
+    </div>

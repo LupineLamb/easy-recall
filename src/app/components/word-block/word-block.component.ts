@@ -20,7 +20,6 @@ export class WordBlockComponent {
     this.switchMode.emit(CurrentMode.GRADING)
   }
   constructor (private localDataService: LocalDataService) {}
-  inputText = ''; 
   wordsToDisplay: WordState[] = [];
   allWords: WordState[] = [];
   snippetSize: number = 100;
@@ -46,52 +45,6 @@ export class WordBlockComponent {
       }
       return
     }
-    //In grading mode:
-    event.preventDefault();
-    switch (event.key) {
-      case '1':
-        this.wordWasEasy();
-        break;
-      case '2':
-        this.wordWasHard();
-        break;
-      case '3':
-        this.wordWasMissed();
-        break;
-      case '4':
-        this.skipGrading();
-        break;
-    }
-
-  }
-
-  submitText(event: Event): void {
-    event.preventDefault();
-
-    let wordsByLine: string[] = this.inputText.split('\n')
-    this.allWords = [];
-    let nextAvailableId = 0
-    wordsByLine.forEach(lineString => {
-      let lineArray: string[] = lineString.split(' ');
-      let beginsLine = true;
-
-      lineArray.forEach(word => {
-        this.allWords.push({
-          id: nextAvailableId++,
-          text: word,
-          beginsLine,
-          isHidden: false,
-          numEasy: 0,
-          numHard: 0,
-          numMissed: 0,
-          masteryPoints: 1,
-        });
-        beginsLine=false
-      });
-    });
-
-    this.wordsToDisplay = this.allWords.slice()
-    this.showForm = false;
   }
 
   revealForm(): void {
@@ -105,10 +58,6 @@ export class WordBlockComponent {
       this.inGradingMode = true;
       this.lastGuessedWordId = this.wordsToDisplay[index].id;
     }
-  }
-
-  skipGrading(): void {
-    this.inGradingMode = false;
   }
 
   showRandomSnippet(): void {
@@ -160,29 +109,6 @@ export class WordBlockComponent {
   startFromLoadedData(): void {
     this.loadData()
     this.showForm = false
-  }
-
-  wordWasEasy(): void {
-    this.inGradingMode = false
-    if (this.lastGuessedWordId != null) {
-      this.allWords[this.lastGuessedWordId].numEasy += 1
-      this.allWords[this.lastGuessedWordId].masteryPoints += 1
-    }
-  }
-
-  wordWasHard(): void {
-    this.inGradingMode = false
-    if (this.lastGuessedWordId != null) {
-      this.allWords[this.lastGuessedWordId].numHard += 1
-    }
-  }
-
-  wordWasMissed(): void {
-    this.inGradingMode = false
-    if (this.lastGuessedWordId != null) {
-      this.allWords[this.lastGuessedWordId].numMissed += 1
-      this.allWords[this.lastGuessedWordId].masteryPoints = 0
-    }
   }
 
   wordIsMastered(word: WordState): boolean {

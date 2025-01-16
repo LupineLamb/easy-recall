@@ -1,20 +1,5 @@
 <div class="word-block-container">
-    <button (click)="switchToGradingMode()">Next Component</button>
-    <form class="text-form" *ngIf="showForm" (ngSubmit)="submitText($event)">
-        <textarea 
-          [(ngModel)]="inputText"
-          name="textInput" 
-          class="text-input"
-          placeholder="Enter text to study"
-          rows="3"
-        ></textarea>
-        <button type="submit" class="submit-btn">Set Text</button>
-      </form>
-      <div *ngIf="showForm">
-      <span>Or...</span>
-      <button class="submit-btn" (click)="startFromLoadedData()">Load Existing Text</button>
-      </div>
-      
+    <button (click)="switchToGradingMode()">Next Component</button>      
     
     <div class="word-block" *ngIf="(wordsToDisplay.length > 0) && (!showForm)">
       <p>
@@ -39,15 +24,7 @@
             <input id="snippetSizeInput" type="number" [(ngModel)]="snippetSize">
           </div>
           <button class="hide-all-btn" (click)="showRandomSnippet()">Random Passage (Spacebar)</button>
-          
         </div>
-      </div>
-      <div *ngIf="inGradingMode">
-        <p *ngIf="lastGuessedWordId != null">Correct Answer: {{ allWords[lastGuessedWordId].text }}</p>
-        <button class="hide-all-btn" (click)="wordWasEasy()">Easy (1)</button>
-        <button class="hide-all-btn" (click)="wordWasHard()">Hard (2)</button>
-        <button class="hide-all-btn" (click)="wordWasMissed()">Missed (3)</button>
-        <button class="hide-all-btn" (click)="skipGrading()">Skip (4)</button>
       </div>
     </div>
   </div>

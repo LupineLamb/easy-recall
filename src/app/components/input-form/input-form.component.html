@@ -1,2 +1,16 @@
 <p>input-form works!</p>
 <button (click)="switchToPassageMode()">Next Component</button>
+<form class="text-form" (ngSubmit)="submitText($event)">
+    <textarea 
+      [(ngModel)]="inputText"
+      name="textInput" 
+      class="text-input"
+      placeholder="Enter text to study"
+      rows="3"
+    ></textarea>
+    <button type="submit" class="submit-btn">Set Text</button>
+  </form>
+  <div>
+  <span>Or...</span>
+  <button class="submit-btn" (click)="startFromLoadedData()">Load Existing Text</button>
+  </div>
