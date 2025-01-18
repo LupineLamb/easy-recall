@@ -14,7 +14,7 @@
     </p>
     </div>
     <div>
-      <p *ngIf="lastGuessedWordId != null">Correct Answer: {{ allWords[lastGuessedWordId].text }}</p>
+      <p>Correct Answer: {{ getWordForGrading().text }}</p>
       <button class="hide-all-btn" (click)="wordWasCorrect()">Got it! (1)</button>
       <button class="hide-all-btn" (click)="wordWasMissed()">Missed (2)</button>
       <button class="hide-all-btn" (click)="skipGrading()">Skip (3)</button>

@@ -1,7 +1,7 @@
 <div class="word-block-container">
     <button (click)="switchToGradingMode()">Next Component</button>      
     
-    <div class="word-block" *ngIf="(wordsToDisplay.length > 0) && (!showForm)">
+    <div class="word-block" *ngIf="(wordsToDisplay.length > 0)">
       <p>
         <span
             *ngFor="let word of wordsToDisplay; let i = index" 
@@ -16,8 +16,7 @@
       </p>
       <div *ngIf="!inGradingMode">
         <button class="hide-all-btn" (click)="saveData()">Save</button>
-        <button class="hide-all-btn" (click)="loadData()">Load</button>
-        <button class="hide-all-btn" (click)="revealForm()">Submit New Text</button>
+        <button class="hide-all-btn" (click)="switchToInputMode()">Submit New Text</button>
         <div>
           <div>
             <label for="snippetSizeInput">Words per Passage:</label>
